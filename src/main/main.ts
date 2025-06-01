@@ -3,7 +3,7 @@ import { join } from 'path';
 
 let tray
 
-const icon = nativeImage.createFromPath('/home/flame1/workspace/TCPeer/assets/TCPEER.jpg') 
+const icon = nativeImage.createFromPath('assets/TCPEER.jpg') 
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -55,19 +55,26 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', function () {
-  
 	tray = new Tray(icon);
 	tray.setToolTip('TCPeer');
 	tray.setTitle('TCPeer');
 	const contextMenu = Menu.buildFromTemplate([
-		{ label: 'Item1', type: 'radio' },
-		{ label: 'Item2', type: 'radio' },
-		{ label: 'Item3', type: 'radio', checked: true },
-		{ label: 'Item4', type: 'radio' }
+		{ 
+			label: 'Open window', 
+			type: 'normal', 
+			click: () => {
+				tray.destroy();
+				createWindow();
+			}
+		},
+		{ 
+			label: 'Quit', 
+			type: 'normal',
+			click: () => app.quit()
+		}
 	])
 
-tray.setContextMenu(contextMenu)
-	//if (process.platform !== 'darwin') app.quit()
+	tray.setContextMenu(contextMenu)
 });
 
 ipcMain.on('message', (event, message) => {
