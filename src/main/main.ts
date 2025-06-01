@@ -3,8 +3,8 @@ import { join } from 'path';
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 330,
-    height: 200,
+    width: 600,
+    height: 400,
     resizable: false,
     title: 'TCPeer',
     autoHideMenuBar: true,
