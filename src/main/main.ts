@@ -1,5 +1,9 @@
-import { app, BrowserWindow, ipcMain, session } from 'electron';
+import { app, BrowserWindow, ipcMain, session, Menu, nativeImage, Tray } from 'electron';
 import { join } from 'path';
+
+let tray
+
+const icon = nativeImage.createFromPath('/home/flame1/workspace/TCPeer/assets/TCPEER.jpg') 
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -7,6 +11,7 @@ function createWindow() {
     height: 400,
     resizable: false,
     title: 'TCPeer',
+		icon: icon,
     autoHideMenuBar: true,
     x: 1100,
     y: 600,
@@ -28,7 +33,8 @@ function createWindow() {
 
 
 app.whenReady().then(() => {
-  createWindow();
+	
+	createWindow();
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
@@ -49,7 +55,19 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
+  
+	tray = new Tray(icon);
+	tray.setToolTip('TCPeer');
+	tray.setTitle('TCPeer');
+	const contextMenu = Menu.buildFromTemplate([
+		{ label: 'Item1', type: 'radio' },
+		{ label: 'Item2', type: 'radio' },
+		{ label: 'Item3', type: 'radio', checked: true },
+		{ label: 'Item4', type: 'radio' }
+	])
+
+tray.setContextMenu(contextMenu)
+	//if (process.platform !== 'darwin') app.quit()
 });
 
 ipcMain.on('message', (event, message) => {
