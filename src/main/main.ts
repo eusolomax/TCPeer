@@ -6,8 +6,8 @@ let tray
 const icon = nativeImage.createFromPath('assets/TCPEER.jpg')
 
 let primaryDisplay;
-let mainWindowWidth = 600
-let mainWindowHeight = 400
+let mainWindowWidth = 500
+let mainWindowHeight = 300
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -18,7 +18,7 @@ function createWindow() {
     icon: icon,
     autoHideMenuBar: true,
     x: primaryDisplay ? primaryDisplay.bounds.width - mainWindowWidth - 10 : 0,
-    y: 0,
+    y: 50,
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       nodeIntegration: false,

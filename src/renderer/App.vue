@@ -6,11 +6,10 @@ import { useTemplateRef, onMounted } from 'vue'
 <template>
 	<v-container>
 		<div id="wrapper">
-			<v-file-upload ref="fileUploadInput" @update:model-value="onFileSelected" style=" height: 400px; " clearable density="comfortable"></v-file-upload>
+			<v-file-upload ref="fileUploadInput" @update:model-value="onFileSelected" style=" height: 190px;" clearable
+				density="comfortable"></v-file-upload>
 		</div>
-  </v-container>
+	</v-container>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
