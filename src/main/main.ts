@@ -1,12 +1,17 @@
-import { app, BrowserWindow, ipcMain, session } from 'electron';
+import { app, BrowserWindow, ipcMain, session, Menu, nativeImage, Tray } from 'electron';
 import { join } from 'path';
+
+let tray
+
+const icon = nativeImage.createFromPath('assets/TCPEER.jpg') 
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 330,
-    height: 200,
+    width: 600,
+    height: 400,
     resizable: false,
     title: 'TCPeer',
+		icon: icon,
     autoHideMenuBar: true,
     x: 1100,
     y: 600,
@@ -28,7 +33,8 @@ function createWindow() {
 
 
 app.whenReady().then(() => {
-  createWindow();
+	
+	createWindow();
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
@@ -49,7 +55,26 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
+	tray = new Tray(icon);
+	tray.setToolTip('TCPeer');
+	tray.setTitle('TCPeer');
+	const contextMenu = Menu.buildFromTemplate([
+		{ 
+			label: 'Open window', 
+			type: 'normal', 
+			click: () => {
+				tray.destroy();
+				createWindow();
+			}
+		},
+		{ 
+			label: 'Quit', 
+			type: 'normal',
+			click: () => app.quit()
+		}
+	])
+
+	tray.setContextMenu(contextMenu)
 });
 
 ipcMain.on('message', (event, message) => {
