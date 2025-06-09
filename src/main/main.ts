@@ -60,6 +60,12 @@ app.on('window-all-closed', function () {
 	tray.setTitle('TCPeer');
 	const contextMenu = Menu.buildFromTemplate([
 		{ 
+			label: 'TCPeer', 
+			type: 'normal', 
+      enabled: false,
+      icon: icon
+		},
+    { 
 			label: 'Open window', 
 			type: 'normal', 
 			click: () => {
