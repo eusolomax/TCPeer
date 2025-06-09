@@ -1,3 +1,4 @@
+import path from "path"
 const Path = require('path');
 const vuePlugin = require('@vitejs/plugin-vue')
 
@@ -18,6 +19,11 @@ const config = defineConfig({
         emptyOutDir: true,
     },
     plugins: [vuePlugin()],
+    resolve: {
+        alias: {
+          "@": path.resolve(__dirname, "./src"),
+        },
+    },
 });
 
 module.exports = config;
