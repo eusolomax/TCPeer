@@ -1,20 +1,24 @@
-import { app, BrowserWindow, ipcMain, session, Menu, nativeImage, Tray } from 'electron';
+import { app, BrowserWindow, ipcMain, session, Menu, nativeImage, Tray, screen } from 'electron';
 import { join } from 'path';
 
 let tray
 
-const icon = nativeImage.createFromPath('assets/TCPEER.jpg') 
+const icon = nativeImage.createFromPath('assets/TCPEER.jpg')
+
+let primaryDisplay;
+let mainWindowWidth = 600
+let mainWindowHeight = 400
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 600,
-    height: 400,
+    width: mainWindowWidth,
+    height: mainWindowHeight,
     resizable: false,
     title: 'TCPeer',
-		icon: icon,
+    icon: icon,
     autoHideMenuBar: true,
-    x: 1100,
-    y: 600,
+    x: primaryDisplay ? primaryDisplay.bounds.width - mainWindowWidth - 10 : 0,
+    y: 0,
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -33,8 +37,12 @@ function createWindow() {
 
 
 app.whenReady().then(() => {
-	
-	createWindow();
+  // createWindow();
+  setTray();
+
+  primaryDisplay = screen.getPrimaryDisplay()
+
+  console.log('DIPSLAY', screen.getPrimaryDisplay())
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
@@ -54,34 +62,36 @@ app.whenReady().then(() => {
   });
 });
 
-app.on('window-all-closed', function () {
-	tray = new Tray(icon);
-	tray.setToolTip('TCPeer');
-	tray.setTitle('TCPeer');
-	const contextMenu = Menu.buildFromTemplate([
-		{ 
-			label: 'TCPeer', 
-			type: 'normal', 
+app.on('window-all-closed', () => { if (!tray) setTray(); });
+
+function setTray() {
+  tray = new Tray(icon);
+  tray.setToolTip('TCPeer');
+  tray.setTitle('TCPeer');
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'TCPeer',
+      type: 'normal',
       enabled: false,
       icon: icon
-		},
-    { 
-			label: 'Open window', 
-			type: 'normal', 
-			click: () => {
-				tray.destroy();
-				createWindow();
-			}
-		},
-		{ 
-			label: 'Quit', 
-			type: 'normal',
-			click: () => app.quit()
-		}
-	])
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Send new file',
+      type: 'normal',
+      click: () => { createWindow(); }
+    },
+    {
+      label: 'Quit',
+      type: 'normal',
+      click: () => app.quit()
+    }
+  ])
 
-	tray.setContextMenu(contextMenu)
-});
+  tray.setContextMenu(contextMenu)
+}
 
 ipcMain.on('message', (event, message) => {
   console.log(message);
