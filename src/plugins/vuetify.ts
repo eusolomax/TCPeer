@@ -14,8 +14,7 @@ export default createVuetify({
   theme: {
     defaultTheme: 'light',
   },
-	components: {
-		VFileUpload,
-	}
+  components: {
+    VFileUpload,
+  }
 })
-

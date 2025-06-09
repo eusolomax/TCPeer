@@ -23,7 +23,10 @@ function createWindow() {
       preload: join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
-    }
+    },
+    alwaysOnTop: true,
+    titleBarStyle: 'hidden',
+    roundedCorners: true
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -41,8 +44,6 @@ app.whenReady().then(() => {
   setTray();
 
   primaryDisplay = screen.getPrimaryDisplay()
-
-  console.log('DIPSLAY', screen.getPrimaryDisplay())
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({

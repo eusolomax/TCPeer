@@ -25,6 +25,10 @@
     "vite": "^5.0.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@mdi/font": "^7.4.47",
     "sass": "^1.89.1",
     "sass-loader": "^13.3.3",
